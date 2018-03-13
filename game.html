@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Game</title>
+  </head>
+  <body>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+    <script>
+      const GRAVITY = 2;
+
+      let playerX = 75;
+      let playerY = 475;
+      let playerOnGround = false;
+
+      const PLAYER_RADIUS = 10;
+      const JUMP_HEIGHT = 8;
+      const PLAYER_SPEED = 4;
+      const LEFT_ARROW = 37;
+      const UP_ARROW = 38;
+      const RIGHT_ARROW = 39;
+      // const DOWN_ARROW = 40;
+
+      let keyLeft = false;
+      let keyRight = false;
+      let keyUp = false;
+
+      window.onload = function () {
+        canvas = document.getElementById('gameCanvas');
+        canvasContext = canvas.getContext('2d');
+
+        let framesPerSecond = 30;
+        setInterval(updateAll, 1000/framesPerSecond);
+
+        setupInput();
+      }
+
+      function setupInput () {
+        document.addEventListener('keydown', keyPressed);
+        document.addEventListener('keyup', keyReleased);
+      }
+
+      function setKeyTo (key, setTo) {
+        if (key == LEFT_ARROW) {
+          keyLeft = setTo;
+        }
+
+        if (key == RIGHT_ARROW) {
+          keyRight = setTo;
+        }
+
+        if (key == UP_ARROW) {
+          keyUp = setTo;
+        }
+      }
+
+      function keyPressed (event) {
+        // event.preventDefault();
+        setKeyTo(event.keyCode, true);
+      }
+
+      function keyReleased (event) {
+        setKeyTo(event.keyCode, false);
+      }
+
+      function updateAll() {
+        movePlayer();
+        drawAll();
+      }
+
+      function movePlayer() {
+        // If player is not on ground, go down until it hits tile
+        if(!playerOnGround) {
+          playerY += GRAVITY;
+        }
+
+        if(keyLeft) {
+          playerX -= PLAYER_SPEED;
+        }
+
+        if(keyRight) {
+          playerX += PLAYER_SPEED;
+        }
+
+        if(keyUp) {
+          playerY -= JUMP_HEIGHT;
+          playerOnGround = false;
+        }
+
+        // Checks if player is on top of a tile
+        if (isTileAtPixel(playerX, playerY+PLAYER_RADIUS) == 1) {
+          playerY = (1+Math.floor(playerY/TILE_H)) * TILE_H - 10;
+          playerOnGround = true;
+        } else if(isTileAtPixel(playerX, playerY+PLAYER_RADIUS+2) == 0) {
+          playerOnGround = false;
+        }
+
+        // Checks if player hits on right side
+        if (isTileAtPixel(playerX+PLAYER_RADIUS, playerY) == 1) {
+          playerX = (1+Math.floor(playerX / TILE_W)) * TILE_W - PLAYER_RADIUS;
+        }
+
+        // Checks if player hits on left side
+        if (isTileAtPixel(playerX-PLAYER_RADIUS, playerY) == 1) {
+          playerX = (Math.floor(playerX / TILE_W)) * TILE_W + PLAYER_RADIUS;
+        }
+      }
+
+      const TILE_W = 40;
+      const TILE_H = 40;
+      const TILE_GAP = 1;
+      const TILE_COLS = 20;
+      const TILE_ROWS = 15;
+
+      let tileGrid = [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
+        1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0
+      ];
+
+      function tileGridIndex(tileCol, tileRow) {
+        return (tileCol + TILE_COLS*tileRow);
+      }
+
+      function isTileHere(tileCol, tileRow) {
+        let tileIndex = tileGridIndex(tileCol, tileRow);
+        return (tileGrid[tileIndex] == 1);
+      }
+
+      function isTileAtPixel(pixelX, pixelY) {
+        let tileCol = Math.floor(pixelX / TILE_W);
+        let tileRow = Math.floor(pixelY / TILE_H);
+
+        if(tileCol < 0 || tileCol >= TILE_COLS || tileRow < 0 || tileRow >= TILE_ROWS) {
+          return false;
+        }
+
+        let tileIndex = tileGridIndex(tileCol, tileRow);
+        return (tileGrid[tileIndex] == 1);
+      }
+
+      function drawAll() {
+        colorRect(0, 0, canvas.width, canvas.height, 'black');
+
+        drawTiles()
+        colorCircle(playerX, playerY, 10, 'white');
+      }
+
+      function drawTiles() {
+        for (let col = 0; col < TILE_COLS; col++) {
+          for (let row = 0; row < TILE_ROWS; row++) {
+            if (isTileHere(col, row)) {
+              let tileLeftEdge = col * TILE_W;
+              let tileTopEdge = row * TILE_H;
+              colorRect(tileLeftEdge, tileTopEdge, TILE_W-TILE_GAP, TILE_H-TILE_GAP, 'brown')
+            }
+          }
+        }
+      }
+
+      function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor) {
+        canvasContext.fillStyle = fillColor;
+        canvasContext.fillRect(topLeftX, topLeftY, boxWidth, boxHeight);
+      }
+
+      function colorCircle(centerX, centerY, radius, fillColor) {
+        canvasContext.fillStyle = fillColor;
+        canvasContext.beginPath();
+        canvasContext.arc(centerX, centerY, radius, 0, Math.PI*2, true);
+        canvasContext.fill();
+      }
+
+      function colorText(showWords, textX, textY, fillColor) {
+        canvasContext.fillStyle = fillColor;
+        canvasContext.fillText(showWords, textX, textY);
+      }
+    </script>
+  </body>
+</html>
