@@ -68,6 +68,7 @@ function movePlayer() {
 
   // If player falls off bottom of screen
   if(playerY-PLAYER_RADIUS > canvas.height) {
+    loadLevel(levelOne);
     playerReset();
   }
 

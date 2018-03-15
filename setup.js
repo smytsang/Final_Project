@@ -13,6 +13,7 @@ window.onload = function () {
 
   setupInput();
   playerReset();
+  loadLevel(levelOne);
 }
 
 function setupInput () {
@@ -51,7 +52,7 @@ function updateAll() {
 }
 
 function loadLevel(level) {
-  tileGrid = level;
+  tileGrid = level.slice();
 }
 
 function drawAll() {
