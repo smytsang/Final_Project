@@ -6,6 +6,7 @@ let playerY = 0;
 let playerSpeedX = 0;
 let playerSpeedY = 0;
 let playerOnGround = false;
+let playerScore = 0;
 
 const PLAYER_RADIUS = 10;
 const JUMP_HEIGHT = 15;
@@ -34,23 +35,23 @@ function movePlayer() {
   }
 
   // Checks if player is on top of a tile
-  if (playerSpeedY > 0 && isTileAtPixel(playerX, playerY+ 2 * PLAYER_RADIUS)) {
+  if (playerSpeedY > 0 && isTileAtPixel(playerX, playerY+ 2 * PLAYER_RADIUS) == 1) {
     // debugger;
     playerY = (1+Math.floor(playerY / TILE_H)) * TILE_H - PLAYER_RADIUS;
     playerSpeedY = 0;
     playerOnGround = true;
-  } else if(!isTileAtPixel(playerX, playerY+PLAYER_RADIUS+2)) {
+  } else if(isTileAtPixel(playerX, playerY+PLAYER_RADIUS+2) != 1) {
     playerOnGround = false;
   }
 
   // Checks if player hits a tile from below
-  if (playerSpeedY < 0 && isTileAtPixel(playerX, playerY-PLAYER_RADIUS)) {
+  if (playerSpeedY < 0 && isTileAtPixel(playerX, playerY-PLAYER_RADIUS) == 1) {
     playerY = (Math.floor(playerY / TILE_H)) * TILE_H + PLAYER_RADIUS;
     playerSpeedY = 0;
   }
 
   // Checks if player hits on right side
-  if (playerSpeedX > 0 && isTileAtPixel(playerX+PLAYER_RADIUS, playerY)) {
+  if (playerSpeedX > 0 && isTileAtPixel(playerX+PLAYER_RADIUS, playerY) == 1) {
     playerX = (1+Math.floor(playerX / TILE_W)) * TILE_W - PLAYER_RADIUS;
     playerSpeedX = 0;
   } else if (playerSpeedX > 0 && playerX+PLAYER_RADIUS >= canvas.width) {
@@ -58,7 +59,7 @@ function movePlayer() {
   }
 
   // Checks if player hits on left side
-  if (playerSpeedX < 0 && isTileAtPixel(playerX-(PLAYER_RADIUS+1), playerY)) {
+  if (playerSpeedX < 0 && isTileAtPixel(playerX-(PLAYER_RADIUS+1), playerY) == 1) {
     playerX = (Math.floor(playerX / TILE_W)) * TILE_W + PLAYER_RADIUS;
     playerSpeedX = 0;
   } else if (playerSpeedX < 0 && playerX-PLAYER_RADIUS <= 0) {
@@ -70,6 +71,8 @@ function movePlayer() {
     playerReset();
   }
 
+  collectCoins();
+
   playerX += playerSpeedX;
   playerY += playerSpeedY;
 }
@@ -78,4 +81,16 @@ function playerReset() {
   playerX = 75;
   playerY = 475;
   playerSpeedX = 0;
+  playerScore = 0;
+}
+
+function collectCoins() {
+  if (isTileAtPixel(playerX, playerY) == 3) {
+    let tileCol = Math.floor(playerX / TILE_W);
+    let tileRow = Math.floor(playerY / TILE_H);
+
+    let tileIndex = Math.floor(tileGridIndex(tileCol, tileRow));
+    tileGrid[tileIndex] = 0;
+    playerScore += 10;
+  }
 }

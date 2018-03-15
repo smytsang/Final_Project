@@ -50,11 +50,16 @@ function updateAll() {
   drawAll();
 }
 
+function loadLevel(level) {
+  tileGrid = level;
+}
+
 function drawAll() {
   colorRect(0, 0, canvas.width, canvas.height, 'black');
 
   drawTiles()
   colorCircle(playerX, playerY, 10, 'white');
+  colorText(`Score: ${playerScore}`, 25, 25, 'white');
 }
 
 function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor) {
