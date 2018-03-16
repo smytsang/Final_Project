@@ -4,6 +4,8 @@ const RIGHT_ARROW = 39;
 let keyLeft = false;
 let keyRight = false;
 
+let winScreen = false;
+
 window.onload = function () {
   canvas = document.getElementById('gameCanvas');
   canvasContext = canvas.getContext('2d');
@@ -19,6 +21,7 @@ window.onload = function () {
 function setupInput () {
   document.addEventListener('keydown', keyPressed);
   document.addEventListener('keyup', keyReleased);
+  document.addEventListener('mousedown', mouseClick);
 }
 
 function setKeyTo (key, setTo) {
@@ -46,6 +49,14 @@ function keyReleased (event) {
   setKeyTo(event.keyCode, false);
 }
 
+function mouseClick (event) {
+  if (winScreen) {
+    loadLevel(levelOne);
+    playerReset();
+    winScreen = false;
+  }
+}
+
 function updateAll() {
   movePlayer();
   drawAll();
@@ -57,6 +68,13 @@ function loadLevel(level) {
 
 function drawAll() {
   colorRect(0, 0, canvas.width, canvas.height, 'black');
+
+  if (winScreen) {
+    colorText('You win!', 380, 250, 'white');
+    colorText(`Final score: ${playerScore}`, 370, 275, 'white');
+    colorText('Click to play again', 360, 350, 'white');
+    return;
+  }
 
   drawTiles()
   colorCircle(playerX, playerY, 10, 'white');
@@ -72,6 +90,13 @@ function colorCircle(centerX, centerY, radius, fillColor) {
   canvasContext.fillStyle = fillColor;
   canvasContext.beginPath();
   canvasContext.arc(centerX, centerY, radius, 0, Math.PI*2, true);
+  canvasContext.fill();
+}
+
+function colorArc(centerX, centerY, radius, fillColor) {
+  canvasContext.fillStyle = fillColor;
+  canvasContext.beginPath();
+  canvasContext.arc(centerX, centerY, radius, 0, Math.PI, true);
   canvasContext.fill();
 }
 

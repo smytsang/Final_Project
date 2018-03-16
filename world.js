@@ -6,7 +6,7 @@ const TILE_ROWS = 15;
 
 let levelOne = [
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3,
-  3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3,
+  0, 4, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3,
   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
   0, 0, 0, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1,
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
@@ -28,6 +28,7 @@ let tileGrid = [];
 // 1 is ground
 // 2 is water
 // 3 is coin
+// 4 is goal
 
 // Adds an index to all values in the grid
 function tileGridIndex(tileCol, tileRow) {
@@ -66,6 +67,8 @@ function drawTiles() {
           colorRect(tileLeftEdge, tileTopEdge, TILE_W, TILE_H-TILE_GAP, 'blue')
         } else if (tileGrid[tileIndex] == 3) {
           colorRect(tileLeftEdge+(TILE_W/3)+2, tileTopEdge+(TILE_H/2)+5, TILE_W/3, TILE_H/3, 'yellow')
+        } else if (tileGrid[tileIndex] == 4) {
+          colorArc(40, 80, 40, 'green');
         }
       }
     }

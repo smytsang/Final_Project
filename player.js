@@ -73,6 +73,7 @@ function movePlayer() {
   }
 
   collectCoins();
+  winLevel();
 
   playerX += playerSpeedX;
   playerY += playerSpeedY;
@@ -93,5 +94,11 @@ function collectCoins() {
     let tileIndex = Math.floor(tileGridIndex(tileCol, tileRow));
     tileGrid[tileIndex] = 0;
     playerScore += 10;
+  }
+}
+
+function winLevel() {
+  if (isTileAtPixel(playerX, playerY) == 4) {
+    winScreen = true;
   }
 }
