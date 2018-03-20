@@ -60,6 +60,7 @@ function mouseClick (event) {
 function updateAll() {
   movePlayer();
   drawAll();
+  platformMove();
 }
 
 function loadLevel(level) {
