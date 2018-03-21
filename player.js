@@ -36,12 +36,22 @@ function movePlayer() {
 
   // Checks if player is on top of a tile
   if (playerSpeedY > 0 && isTileAtPixel(playerX, playerY+ 2 * PLAYER_RADIUS) == 1) {
-    // debugger;
     playerY = (1+Math.floor(playerY / TILE_H)) * TILE_H - PLAYER_RADIUS;
     playerSpeedY = 0;
     playerOnGround = true;
   } else if(isTileAtPixel(playerX, playerY+PLAYER_RADIUS+2) != 1) {
     playerOnGround = false;
+  }
+
+  // console.log(topEdge)
+  if (playerX > platform && playerX < platform+(TILE_W*4)) {
+    if (playerY > topEdge-PLAYER_RADIUS) {
+      // debugger
+      // playerY = (1+Math.floor(playerY / TILE_H)) * TILE_H - PLAYER_RADIUS;
+      playerY = topEdge-2*PLAYER_RADIUS
+      playerX += moveSpeed;
+      playerOnGround = true;
+    }
   }
 
   // Checks if player hits a tile from below

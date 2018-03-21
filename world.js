@@ -50,7 +50,7 @@ let levelOne = [
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
 ];
@@ -71,24 +71,19 @@ let tileGrid = [];
 let platform = 240;
 let platformIndex = tileGridIndex(13, 28);
 let moveSpeed = 1.5;
+// let platformCenter = (platform + rightEdge)/2;
+let topEdge = 540;
 
 function platformMove() {
-
+  let rightEdge = platform+(TILE_W*4);
   let leftEdge = platform;
-  let rightEdge = platform+(TILE_W*3);
-  let platformCenter = (platform + rightEdge)/2;
   let topEdge = 540;
 
-  // platform += moveSpeed;
   if (isTileAtPixel(platform, topEdge+TILE_H*2) == 1) {
     moveSpeed *= -1;
-    // platform += moveSpeed;
   } else if (isTileAtPixel(rightEdge, topEdge+TILE_H*2) == 1) {
-    debugger
     moveSpeed *= -1;
-    // platform -= moveSpeed;
   }
-
   platform += moveSpeed;
 }
 
@@ -132,7 +127,7 @@ function drawTiles() {
         } else if (tileGrid[tileIndex] == 4) {
           colorArc(40, 80, 40, 'green');
         } else if (tileGrid[tileIndex] == 5) {
-          colorRect(platform, tileTopEdge, TILE_W*3, TILE_H/2, 'purple')
+          colorRect(platform, tileTopEdge, TILE_W*4, TILE_H/2, 'purple')
         }
       }
     }
