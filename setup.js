@@ -10,6 +10,10 @@ window.onload = function () {
   canvas = document.getElementById('gameCanvas');
   canvasContext = canvas.getContext('2d');
 
+  loadImages();
+}
+
+function imageLoadingDone () {
   let framesPerSecond = 30;
   setInterval(updateAll, 1000/framesPerSecond);
 
@@ -78,7 +82,8 @@ function drawAll() {
   }
 
   drawTiles()
-  colorCircle(playerX, playerY, 10, 'white');
+  canvasContext.drawImage(toadPic, playerX - 10, playerY-12, 20, 25)
+
   colorText(`Score: ${playerScore}`, 25, 25, 'white');
 }
 

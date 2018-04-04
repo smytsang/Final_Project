@@ -57,17 +57,6 @@ let levelOne = [
 
 let tileGrid = [];
 
-// 0 is space
-// 1 is ground
-// 2 is water
-// 3 is coin
-// 4 is goal
-// 5 is platform
-
-// left edge = 240
-// right edge = 300
-// top edge = 540;
-
 let platform = 240;
 let platformIndex = tileGridIndex(13, 28);
 let moveSpeed = 1.5;
@@ -119,15 +108,15 @@ function drawTiles() {
 
         let tileIndex = tileGridIndex(col, row)
         if (tileGrid[tileIndex] == 1) {
-          colorRect(tileLeftEdge, tileTopEdge, TILE_W-TILE_GAP, TILE_H-TILE_GAP, 'brown')
+          canvasContext.drawImage(wallPic, tileLeftEdge, tileTopEdge, TILE_W-TILE_GAP, TILE_H-TILE_GAP)
         } else if (tileGrid[tileIndex] == 2) {
           colorRect(tileLeftEdge, tileTopEdge, TILE_W, TILE_H, 'blue')
         } else if (tileGrid[tileIndex] == 3) {
-          colorRect(tileLeftEdge+(TILE_W/3)-3, tileTopEdge+(TILE_H/2)-3, TILE_W/2, TILE_H/2, 'yellow')
+          canvasContext.drawImage(starPic, tileLeftEdge+(TILE_W/3)-3, tileTopEdge+(TILE_H/2)-3, TILE_W/2, TILE_H/2)
         } else if (tileGrid[tileIndex] == 4) {
-          colorArc(40, 80, 40, 'green');
+          canvasContext.drawImage(doorPic, 10, 25, 70, 55)
         } else if (tileGrid[tileIndex] == 5) {
-          colorRect(platform, tileTopEdge, TILE_W*4, TILE_H/2, 'purple')
+          canvasContext.drawImage(platformPic, platform, tileTopEdge, TILE_W*4, TILE_H/2)
         }
       }
     }
