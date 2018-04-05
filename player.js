@@ -53,6 +53,13 @@ function movePlayer() {
     }
   }
 
+  if (playerSpeedY > 0 && isTileAtPixel(playerX, playerY+ 2 * PLAYER_RADIUS) == 7) {
+    playerY = (1+Math.floor(playerY / TILE_H)) * TILE_H + PLAYER_RADIUS;
+    playerX = playerX + TILE_W/2
+    playerSpeedY = 0;
+    playerOnGround = true;
+  }
+
   // Checks if player hits a tile from below
   if (playerSpeedY < 0 && isTileAtPixel(playerX, playerY-PLAYER_RADIUS) == 1) {
     playerY = (Math.floor(playerY / TILE_H)) * TILE_H + PLAYER_RADIUS;

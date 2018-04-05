@@ -78,7 +78,6 @@ function updateAll() {
   drawAll();
   platformMove();
   marioMove();
-  // cameraFollow();
 }
 
 function loadLevel(level) {
@@ -102,12 +101,8 @@ function drawAll() {
     return;
   }
 
-  // canvasContext.save(); // new
-  // canvasContext.translate(-camPanX, -camPanY); // new
-  // drawOnlyBricksOnScreen(); // new
   drawTiles()
   canvasContext.drawImage(toadPic, playerX - 10, playerY-12, 20, 25)
-  // canvasContext.restore(); // new
 
   colorText(`Score: ${playerScore}`, 125, 25, 'white');
   colorText(`Lives: ${playerLives}`, 525, 25, 'white');
