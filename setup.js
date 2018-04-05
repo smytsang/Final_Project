@@ -5,6 +5,8 @@ let keyLeft = false;
 let keyRight = false;
 
 let winScreen = false;
+let loseScreen = false;
+let canvas, canvasContext;
 
 window.onload = function () {
   canvas = document.getElementById('gameCanvas');
@@ -57,7 +59,17 @@ function mouseClick (event) {
   if (winScreen) {
     loadLevel(levelOne);
     playerReset();
+    playerScore = 0;
+    playerLives = 3;
     winScreen = false;
+  }
+
+  if (loseScreen) {
+    loadLevel(levelOne);
+    playerReset();
+    playerScore = 0;
+    playerLives = 3;
+    loseScreen = false;
   }
 }
 
@@ -65,6 +77,8 @@ function updateAll() {
   movePlayer();
   drawAll();
   platformMove();
+  marioMove();
+  // cameraFollow();
 }
 
 function loadLevel(level) {
@@ -81,10 +95,22 @@ function drawAll() {
     return;
   }
 
+  if (loseScreen) {
+    colorText('Game Over!', 380, 250, 'white');
+    colorText(`Final score: ${playerScore}`, 370, 275, 'white');
+    colorText('Click to play again', 360, 350, 'white');
+    return;
+  }
+
+  // canvasContext.save(); // new
+  // canvasContext.translate(-camPanX, -camPanY); // new
+  // drawOnlyBricksOnScreen(); // new
   drawTiles()
   canvasContext.drawImage(toadPic, playerX - 10, playerY-12, 20, 25)
+  // canvasContext.restore(); // new
 
-  colorText(`Score: ${playerScore}`, 25, 25, 'white');
+  colorText(`Score: ${playerScore}`, 125, 25, 'white');
+  colorText(`Lives: ${playerLives}`, 525, 25, 'white');
 }
 
 function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor) {

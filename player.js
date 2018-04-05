@@ -7,8 +7,9 @@ let playerSpeedX = 0;
 let playerSpeedY = 0;
 let playerOnGround = false;
 let playerScore = 0;
+let playerLives = 3;
 
-const PLAYER_RADIUS = 10;
+const PLAYER_RADIUS = 12;
 const JUMP_HEIGHT = 15;
 const PLAYER_SPEED = 5;
 
@@ -43,11 +44,9 @@ function movePlayer() {
     playerOnGround = false;
   }
 
-  // console.log(topEdge)
+  // Checks if player is on top of the moving platform
   if (playerX > platform && playerX < platform+(TILE_W*4)) {
     if (playerY > topEdge-PLAYER_RADIUS) {
-      // debugger
-      // playerY = (1+Math.floor(playerY / TILE_H)) * TILE_H - PLAYER_RADIUS;
       playerY = topEdge-2*PLAYER_RADIUS
       playerX += moveSpeed;
       playerOnGround = true;
@@ -76,10 +75,29 @@ function movePlayer() {
     playerSpeedX = 0;
   }
 
+  // Checks if player hits pipe on right side
+  if (playerSpeedX < 0 && isTileAtPixel(playerX-(PLAYER_RADIUS*2)-(TILE_W/2), playerY-(TILE_H*2)) == 7) {
+    playerX = (Math.floor(playerX / TILE_W)) * TILE_W + PLAYER_RADIUS;
+    playerSpeedX = 0;
+  }
+
+  // Checks if player hits pipe on left side
+  if (playerSpeedX > 0 && isTileAtPixel(playerX+(PLAYER_RADIUS), playerY-(TILE_H*2)) == 7) {
+    playerX = (Math.floor(playerX / TILE_W)) * TILE_W + PLAYER_RADIUS + 5
+     // - PLAYER_RADIUS;
+    playerSpeedX = 0;
+  }
+
   // If player falls off bottom of screen
   if(playerY-PLAYER_RADIUS > canvas.height) {
-    loadLevel(levelOne);
-    playerReset();
+    if (playerLives >= 2) {
+      playerLives--;
+      playerReset();
+    } else if (playerLives >= 1) {
+      // loadLevel(levelOne);
+      // playerReset();
+      loseScreen = true;
+    }
   }
 
   collectCoins();
@@ -93,7 +111,6 @@ function playerReset() {
   playerX = 75;
   playerY = 475;
   playerSpeedX = 0;
-  playerScore = 0;
 }
 
 function collectCoins() {

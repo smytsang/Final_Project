@@ -3,6 +3,8 @@ let wallPic = document.createElement('img');
 let starPic = document.createElement('img');
 let doorPic = document.createElement('img');
 let platformPic = document.createElement('img');
+let mario = document.createElement('img');
+let tubePic = document.createElement('img');
 
 let picsToLoad = 0;
 
@@ -24,7 +26,9 @@ function loadImages() {
     {imageName: wallPic, fileName: 'assets/mario_tile.png'},
     {imageName: starPic, fileName: 'assets/star.png'},
     {imageName: doorPic, fileName: 'assets/mario_door.png'},
-    {imageName: platformPic, fileName: 'assets/mario_platform.png'}
+    {imageName: platformPic, fileName: 'assets/mario_platform.png'},
+    {imageName: mario, fileName: 'assets/mario.png'},
+    {imageName: tubePic, fileName: 'assets/mario_tube.png'}
   ];
 
   picsToLoad = imageList.length;
